@@ -268,9 +268,11 @@ void XloggerAppender::Close() {
 
     char mark_info[512] = {0};
     __GetMarkInfo(mark_info, sizeof(mark_info));
-    char appender_info[728] = {0};
-    snprintf(appender_info, sizeof(appender_info), "$$$$$$$$$$" __DATE__ "$$$" __TIME__ "$$$$$$$$$$%s\n", mark_info);
-    Write(nullptr, appender_info);
+
+//    关闭时不写入日志
+//    char appender_info[728] = {0};
+//    snprintf(appender_info, sizeof(appender_info), "$$$$$$$$$$" __DATE__ "$$$" __TIME__ "$$$$$$$$$$%s\n", mark_info);
+//    Write(nullptr, appender_info);
 
     log_close_ = true;
 
@@ -387,45 +389,45 @@ void XloggerAppender::Open(const XLogConfig& _config) {
         __Log2File(buffer.Ptr(), buffer.Length(), false);
         WriteTips2File("~~~~~ end of mmap ~~~~~%s\n", mark_info);
     }
-
-    tickcountdiff_t get_mmap_time = tickcount_t().gettickcount() - tick;
-
-    char appender_info[728] = {0};
-    snprintf(appender_info, sizeof(appender_info), "^^^^^^^^^^" __DATE__ "^^^" __TIME__ "^^^^^^^^^^%s", mark_info);
-
-    Write(nullptr, appender_info);
-    char logmsg[256] = {0};
-    snprintf(logmsg, sizeof(logmsg), "get mmap time: %" PRIu64, (int64_t)get_mmap_time);
-    Write(nullptr, logmsg);
-
-    Write(nullptr, "MARS_URL: " MARS_URL);
-    Write(nullptr, "MARS_PATH: " MARS_PATH);
-    Write(nullptr, "MARS_REVISION: " MARS_REVISION);
-    Write(nullptr, "MARS_BUILD_TIME: " MARS_BUILD_TIME);
-    Write(nullptr, "MARS_BUILD_JOB: " MARS_TAG);
-
-    snprintf(logmsg, sizeof(logmsg), "log appender mode:%d, use mmap:%d", (int)config_.mode_, use_mmap);
-    Write(nullptr, logmsg);
-
-    if (!config_.cachedir_.empty()) {
-        boost::filesystem::space_info info = boost::filesystem::space(config_.cachedir_);
-        snprintf(logmsg,
-                 sizeof(logmsg),
-                 "cache dir space info, capacity:%" PRIuMAX " free:%" PRIuMAX " available:%" PRIuMAX,
-                 info.capacity,
-                 info.free,
-                 info.available);
-        Write(nullptr, logmsg);
-    }
-
-    boost::filesystem::space_info info = boost::filesystem::space(config_.logdir_);
-    snprintf(logmsg,
-             sizeof(logmsg),
-             "log dir space info, capacity:%" PRIuMAX " free:%" PRIuMAX " available:%" PRIuMAX,
-             info.capacity,
-             info.free,
-             info.available);
-    Write(nullptr, logmsg);
+//    不写入头部额外信息
+//    tickcountdiff_t get_mmap_time = tickcount_t().gettickcount() - tick;
+//
+//    char appender_info[728] = {0};
+//    snprintf(appender_info, sizeof(appender_info), "^^^^^^^^^^" __DATE__ "^^^" __TIME__ "^^^^^^^^^^%s", mark_info);
+//
+//    Write(nullptr, appender_info);
+//    char logmsg[256] = {0};
+//    snprintf(logmsg, sizeof(logmsg), "get mmap time: %" PRIu64, (int64_t)get_mmap_time);
+//    Write(nullptr, logmsg);
+//
+//    Write(nullptr, "MARS_URL: " MARS_URL);
+//    Write(nullptr, "MARS_PATH: " MARS_PATH);
+//    Write(nullptr, "MARS_REVISION: " MARS_REVISION);
+//    Write(nullptr, "MARS_BUILD_TIME: " MARS_BUILD_TIME);
+//    Write(nullptr, "MARS_BUILD_JOB: " MARS_TAG);
+//
+//    snprintf(logmsg, sizeof(logmsg), "log appender mode:%d, use mmap:%d", (int)config_.mode_, use_mmap);
+//    Write(nullptr, logmsg);
+//
+//    if (!config_.cachedir_.empty()) {
+//        boost::filesystem::space_info info = boost::filesystem::space(config_.cachedir_);
+//        snprintf(logmsg,
+//                 sizeof(logmsg),
+//                 "cache dir space info, capacity:%" PRIuMAX " free:%" PRIuMAX " available:%" PRIuMAX,
+//                 info.capacity,
+//                 info.free,
+//                 info.available);
+//        Write(nullptr, logmsg);
+//    }
+//
+//    boost::filesystem::space_info info = boost::filesystem::space(config_.logdir_);
+//    snprintf(logmsg,
+//             sizeof(logmsg),
+//             "log dir space info, capacity:%" PRIuMAX " free:%" PRIuMAX " available:%" PRIuMAX,
+//             info.capacity,
+//             info.free,
+//             info.available);
+//    Write(nullptr, logmsg);
 }
 
 std::string XloggerAppender::__MakeLogFileNamePrefix(const timeval& _tv, const char* _prefix) {

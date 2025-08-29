@@ -35,7 +35,7 @@ ANDROID_BUILD_CMD = 'cmake "%s" %s -DANDROID_ABI="%s" ' \
                     '-DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=%s/build/cmake/android.toolchain.cmake ' \
                     '-DANDROID_TOOLCHAIN=clang -DANDROID_NDK=%s ' \
                     '-DANDROID_PLATFORM=android-21 ' \
-                    '-DANDROID_STL="c++_shared" ' \
+                    '-DANDROID_STL="c++_static" ' \
                     '&& cmake --build . %s --config Release -- -j8'
 ANDROID_SYMBOL_PATH = 'libraries/mars_android_sdk/obj/local/'
 ANDROID_LIBS_PATH = 'libraries/mars_android_sdk/libs/'

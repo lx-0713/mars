@@ -61,6 +61,8 @@ if(ANDROID)
                             libzstd_static
                             ${log-lib}
                             ${z-lib}
+                            "-Wl,-z,max-page-size=16384"
+                            "-Wl,-z,common-page-size=16384"
                             )
  
     # marsstn
